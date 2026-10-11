@@ -1,0 +1,55 @@
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+
+# --- IDEs & Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Environment & Secrets (CRITICAL) ---
+# This prevents your API keys from ever being uploaded to GitHub
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.bak
+backend/.env
+frontend/.env.local
+
+# --- Python / Backend ---
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.build/
+dist/
+build/
+*.egg-info/
+.direnv/
+
+# --- Node.js / Frontend (Next.js) ---
+node_modules/
+.next/
+out/
+build/
+.cache/
+.eslintcache
+.stylelintcache
+.cache-build
+.parcel-cache
+.cache-workspace
+.swc_cache
+
+# --- Logs ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
