@@ -13,3 +13,9 @@ class AgentState(TypedDict):
 
 # 2. Initialize the LLM
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+
+
+def call_model(state: AgentState):
+    messages = [AIMessage(content=SYSTEM_PROMPT)] + state["messages"]
+    response = llm.invoke(messages)
+    return response
