@@ -1,21 +1,27 @@
 from typing import TypedDict, List, Annotated
-from langgraph.graph import StateGraph, END
+from langgraph.graph import StateGraph, START, END
+from langgraph.graph.message import add_messages
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
+from langchain_core.messages import BaseMessage, SystemMessage
 from app.agents.prompts import SYSTEM_PROMPT
-import json
 
 # 1. Define the State (The "Memory" of the agent)
 class AgentState(TypedDict):
-    messages: List[BaseMessage]
+    messages: Annotated[List[BaseMessage], add_messages]
     brand_soul: dict
     is_complete: bool
 
-# 2. Initialize the LLM
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
 
-
+# Just invoking LLM response
 def call_model(state: AgentState):
-    messages = [AIMessage(content=SYSTEM_PROMPT)] + state["messages"]
+    messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
     response = llm.invoke(messages)
-    return response
+    return {"messages": [response]}
+
+# Setting up the agentic graph
+graph = StateGraph(AgentState)
+graph.add_node(call_model)
+graph.add_edge(START, "call_model")
+graph.add_edge("call_model", END)
+agent = graph.compile()
