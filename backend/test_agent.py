@@ -9,6 +9,3 @@ result = agent.invoke({
     "brand_soul": {},
     "is_complete": False,
 })
-
-for i in result:
-    print(result[i])
