@@ -1,9 +1,15 @@
-from typing import TypedDict, List, Annotated
-from langgraph.graph import StateGraph, START, END
-from langgraph.graph.message import add_messages
-from langchain_openai import ChatOpenAI
+from typing import Annotated, List, TypedDict
+
+from dotenv import load_dotenv
 from langchain_core.messages import BaseMessage, SystemMessage
+from langchain_openai import ChatOpenAI
+from langgraph.graph import END, START, StateGraph
+from langgraph.graph.message import add_messages
+
 from app.agents.prompts import SYSTEM_PROMPT
+
+load_dotenv()  # loads .env before the LLM is created
+
 
 # 1. Define the State (The "Memory" of the agent)
 class AgentState(TypedDict):
@@ -11,13 +17,16 @@ class AgentState(TypedDict):
     brand_soul: dict
     is_complete: bool
 
+
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+
 
 # Just invoking LLM response
 def call_model(state: AgentState):
     messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
     response = llm.invoke(messages)
     return {"messages": [response]}
+
 
 # Setting up the agentic graph
 graph = StateGraph(AgentState)
