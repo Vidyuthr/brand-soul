@@ -1,5 +1,4 @@
 # brand_agent.py
-
 from typing import Annotated, List, TypedDict
 
 from dotenv import load_dotenv
@@ -29,9 +28,7 @@ llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
 def call_model(state: AgentState):
     messages = [SystemMessage(content=SYSTEM_PROMPT)] + state["messages"]
     response = llm.invoke(messages)
-    print("len of convo ", len(result["messages"]))
     return {"messages": [response]}
-    
 
 checkpointer = InMemorySaver()
 
@@ -40,4 +37,4 @@ graph = StateGraph(AgentState)
 graph.add_node(call_model)
 graph.add_edge(START, "call_model")
 graph.add_edge("call_model", END)
-agent = graph.compile(checkpointer=checkpointer)
+final_agent_graph = graph.compile(checkpointer=checkpointer)

@@ -35,9 +35,8 @@ async def send_user_input_to_llm(body: UserPromptInput) -> AgentResponse:
     }
     config: RunnableConfig = {"configurable": {"thread_id": body.thread_id}}
     result = agent_graph.invoke(agent_state, config)
-    print("len messages:", len(result["messages"]))
+    # msgs_clean = [{"msg_content": m.content, "type": m.type} for m in result["messages"] ]
     return AgentResponse(message=result["messages"][-1].content)
-
 
 @app.post("/generate-soul")
 async def generate_soul(body: UserPromptInput):
